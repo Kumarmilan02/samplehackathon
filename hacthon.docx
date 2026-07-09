@@ -369,3 +369,18 @@ Rapid Cash Withdrawals
 Synthetic Identity Fraud
 
 This richer dataset would make your dashboard, graph visualization, AI risk scoring, and investigation reports much more impressive during the presentation.
+
+
+Significance of the Problem
+
+Money laundering is a major global financial crime that enables illegal activities such as fraud, terrorism financing, tax evasion, and corruption. As digital payments and online banking continue to grow, financial institutions process millions of transactions every day, making it increasingly difficult to identify suspicious activities using traditional rule-based AML systems. Manual investigations are time-consuming, generate a high number of false positives, and often fail to detect complex laundering networks. Developing an AI-powered, graph-based AML platform enables financial institutions to proactively identify hidden transaction patterns, reduce investigation time, improve compliance with regulatory standards, and strengthen the overall security of the financial ecosystem.
+
+Potential Impact
+
+The proposed solution can significantly improve the efficiency and accuracy of Anti-Money Laundering investigations by combining Artificial Intelligence with Graph Database technology. It enables banks and financial institutions to detect sophisticated money laundering networks in real time, reduce false positives, and prioritize high-risk cases using intelligent risk scoring. The platform helps compliance teams make faster and more informed decisions while generating investigation-ready reports for regulatory authorities. In the long term, the solution can contribute to reducing financial crime, improving regulatory compliance, minimizing operational costs, protecting customer trust, and creating a safer and more transparent digital financial ecosystem.
+
+Why Solving This Problem is Important
+
+Financial crime is becoming increasingly sophisticated, and existing rule-based systems are no longer sufficient to detect complex laundering techniques. Delayed detection not only results in financial losses but also exposes institutions to regulatory penalties and reputational damage. By leveraging AI, machine learning, and graph analytics, this solution transforms AML investigations from a reactive, manual process into a proactive, intelligent, and scalable system. Solving this problem enables financial institutions to respond to suspicious activities faster, improve compliance, reduce operational effort, and ultimately strengthen the integrity and trustworthiness of the global financial system.
+
+These sections fit naturally after your Problem Statement and before Input, making your hackathon document look like a professional product proposal.
