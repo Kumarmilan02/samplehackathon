@@ -1,386 +1,203 @@
-Use Case Title:
-“Sentinel AML: AI-Powered Anti-Money Laundering & Financial Crime Investigation Platform”
-Problem Statement:
-Financial institutions process millions of transactions every day. Traditional Anti-Money Laundering (AML) systems primarily rely on static, rule-based checks (for example, transactions above a fixed threshold), which generate a large number of false positives and fail to detect sophisticated laundering techniques.
-Modern financial criminals use complex methods such as:
-Structuring (Smurfing): Splitting large amounts into multiple small transactions below reporting thresholds. 
-Layering: Moving money across multiple accounts to hide its origin. 
-Circular Money Flow: Repeatedly transferring funds among interconnected accounts. 
-Mule Accounts: Using multiple individuals or fake accounts to transfer funds. 
-Shared Device/IP Fraud: Operating several accounts from the same device or network. 
-Crypto Off-ramping: Moving illicit funds into cryptocurrency wallets. 
-Since investigators usually analyze transactions individually using spreadsheets or rule-based reports, identifying hidden transaction networks becomes time-consuming and error-prone.
-Financial institutions need an intelligent Anti-Money Laundering (AML) platform that analyzes entire transaction networks instead of isolated transactions, automatically detects suspicious transaction patterns and hidden relationships in real time, explains why accounts are considered high risk, prioritizes investigations using AI-driven risk scores, visualizes complex financial connections, and generates regulator-ready investigation reports to improve the speed, accuracy, and effectiveness of financial crime detection and compliance.
-This solution aims to leverage Artificial Intelligence, Graph Databases, and Explainable AI to enable faster, more accurate, and more efficient financial crime investigations while significantly reducing manual effort.
-Objective:
-Develop an AI-powered web-based Anti-Money Laundering (AML) Investigation Platform that enables banks and financial institutions to automatically detect suspicious financial activities, visualize transaction networks, assign intelligent risk scores, and generate investigation reports using machine learning and graph analytics.
-Input:
-The application should support multiple methods of importing financial transaction data.
-1. Transaction Dataset
-Supported formats: CSV, Excel (.xlsx) ,REST API
-Sample Demo Dataset attached below
-The dataset contains:
-100,000+ synthetic banking transactions 
-Customer information 
-KYC details 
-Device information 
-IP addresses 
-Transaction channels 
-Fraud labels 
-AML scenarios 
-High-risk accounts 
-Blacklisted entities
-Processing:
-After uploading the dataset, the platform automatically performs multiple stages of analysis.
-Stage 1 — Data Validation
-The system validates incoming data by:
-Removing duplicate transactions 
-Handling missing values 
-Verifying mandatory fields 
-Standardizing timestamps 
-Validating account numbers
-Stage 2 — Data Transformation
-The validated data is converted into graph structures.This graph enables detection of hidden transaction relationships
-
-Stage 3 — Graph Analytics
-This stage analyzes transaction networks by representing accounts, transactions, devices, beneficiaries, and IP addresses as interconnected entities. The system detects multi-hop transfers, circular transactions, shared beneficiaries, hidden transaction chains, common devices, shared IP addresses, and transaction clusters. By uncovering these hidden relationships, it provides a complete view of suspicious financial networks, enabling investigators to identify complex money laundering patterns and prioritize high-risk cases more effectively.
-Stage 4 — AI-Based Risk Analysis
-Machine learning models continuously analyze transaction behavior to identify suspicious financial activities such as structuring (smurfing), where large transactions are split into smaller amounts to avoid reporting thresholds; layering, in which funds are transferred through multiple intermediary accounts to conceal their origin; circular money flow, where funds repeatedly circulate among connected accounts; mule account activity, where accounts receive and immediately forward funds; shared device/IP fraud, involving multiple accounts operated from the same device or IP address; blacklisted entity connections, where transactions involve sanctioned or suspicious entities; and crypto off-ramping, where illicit funds are moved into cryptocurrency wallets to obscure their traceability.
-Stage 5 — AI Risk Scoring
-The platform assigns an AI-driven risk score to each account by evaluating multiple behavioral and network-based factors. The score considers transaction velocity, transaction amount, historical transaction behavior, network centrality, device sharing, IP address similarity, connections with blacklisted entities, and transaction frequency. By combining these indicators, the system prioritizes high-risk accounts, enabling investigators to focus on the most suspicious cases and accelerate the AML investigation process.
-
-Every account receives an AI-generated Risk Score between 0–100.
-Example
-Score	Risk Level
-0–30	Low
-31–60	Medium
-61–80	High
-81–100	Critical
-Output:
-1. Intelligent Transaction Analysis
-The application automatically analyzes uploaded transaction data and classifies each transaction based on its risk level. Using AI and predefined fraud detection models, it identifies suspicious activities such as structuring, layering, circular money flow, mule accounts, shared device/IP usage, and transactions involving blacklisted or high-risk entities.
-2.AI-Based Risk Scoring
-Every customer and account is assigned a dynamic AI-generated risk score ranging from 0 to 100. The score is calculated based on multiple factors including transaction frequency, transaction amount, network connectivity, device sharing, historical behavior, and suspicious transaction patterns. Along with the score, the system provides an explanation of why the account has been marked as risky.
-3. Interactive Transaction Network Visualization
-The platform generates an interactive graph showing relationships between accounts, customers, and transactions. Investigators can visually trace the flow of money, explore connected accounts, identify hidden fraud rings, and understand complex transaction networks that are difficult to detect using traditional reports.
-4. Real-Time Fraud Alerts
-Whenever suspicious activities are detected, the system automatically generates alerts and categorizes them by severity. Compliance officers receive notifications for events such as structuring, layering, rapid transaction spikes, shared devices, blacklisted account interactions, and crypto wallet transfers, enabling quicker investigation and response.
-5. AI Investigation Assistant(optional)
-The platform includes an AI-powered assistant that allows investigators to ask questions in natural language. Users can request explanations for suspicious transactions, identify connected accounts, summarize investigation findings, or retrieve insights about specific customers without manually analyzing large volumes of data.
-6. Automated Investigation Report
-After completing the analysis, the application generates a detailed investigation report in PDF format. The report includes suspicious accounts, transaction timelines, AI-generated risk scores, explanations, transaction network visualizations, and recommended actions. This report can be shared with compliance teams and regulatory authorities for further review.
-7. Analytics Dashboard
-The application provides a centralized dashboard displaying key AML metrics such as total transactions processed, suspicious transactions, high-risk accounts, critical alerts, fraud trends, geographic distribution of suspicious activities, and overall investigation statistics. This enables compliance teams to monitor financial crime risks in real time and prioritize investigations effectively.
-
-Yes. Since I generated the dataset, I can explain exactly what it contains and how your application should produce the output.
-
-Dataset Overview
-File Name:
-aml_master_dataset_100000.csv
-Total Records
-100,000 Transactions
-
-Distribution of Transactions
-Transaction Type	Approx Count	Percentage
-Normal Transactions	99,500	99.5%
-Structuring (Smurfing)	100	0.10%
-Layering	100	0.10%
-Circular Money Flow	300	0.30%
-Total AML Transactions	500	0.50%
-This gives a realistic imbalance where only a small fraction of transactions are suspicious.
-
-Columns in the Dataset
-Column	Description
-transactionId	Unique transaction ID
-timestamp	Date and time of transaction
-customerId	Customer identifier
-customerName	Synthetic customer name
-kycStatus	Verified / Pending
-riskProfile	Customer's base risk profile
-senderAccount	Sender account number
-receiverAccount	Receiver account number
-senderCity	Sender location
-receiverCity	Receiver location
-amountINR	Transaction amount
-currency	INR
-transactionType	UPI / IMPS / NEFT / RTGS
-deviceId	Device identifier
-ipAddress	IP address
-isBlacklistedReceiver	Yes / No
-amlScenario	Fraud pattern
-expectedRisk	Ground truth risk
-remarks	Description
+Yes. I would actually make it read like an **enterprise banking use case** rather than a college project. One suggestion: instead of only focusing on *money laundering detection*, position it as an **AI-Powered Financial Crime Investigation & Intelligence Platform**. That gives you room to include AML, fraud, mule accounts, shell companies, and explainable AI.
 
-AI Output
-Your application should not directly display the expectedRisk column. That column is only for validating your AI model.
-Instead, your AI should generate something like:
-Output	Description
-Risk Score	0–100
-Risk Category	Low / Medium / High / Critical
-Suspicious Pattern	Structuring, Layering, etc.
-AI Explanation	Why the transaction is suspicious
-Alert	Yes / No
+---
 
-Risk Score Logic
-For your demo, you can define the following scoring model:
-Score	Category	Action
-0–30	Low	Normal transaction
-31–60	Medium	Monitor
-61–80	High	Investigator review
-81–100	Critical	Immediate AML alert
+# I. Use Case Short Title
 
-Example AI Outputs
-Normal Transaction
-Transaction ID
+**TraceFi – AI-Powered Financial Crime Investigation & Intelligence Platform**
 
-TXN000254
+---
 
-Risk Score
+# II. Problem Statement & Background
 
-12
+Financial institutions process millions of digital transactions every day through internet banking, UPI, RTGS, NEFT, IMPS, credit cards, and other payment channels. As digital transactions continue to grow, financial criminals have adopted increasingly sophisticated techniques to hide illicit funds. Rather than transferring large amounts in a single transaction, they distribute money across multiple accounts, use mule accounts, shell companies, layered transactions, circular fund movements, and rapid transfers to disguise the source of funds.
 
-Category
+Traditional Anti-Money Laundering (AML) systems primarily rely on predefined business rules and threshold-based monitoring. While these systems are effective in detecting simple violations, they often struggle to identify complex transaction networks involving multiple intermediaries. This results in a high number of false positives, delayed investigations, and increased manual effort for compliance teams.
 
-LOW
+Investigators are required to manually analyze thousands of transactions, correlate customer relationships, identify suspicious patterns, prepare investigation reports, and ensure regulatory compliance. This process is time-consuming, expensive, and often reactive rather than proactive.
 
-Reason
+This use case proposes an **AI-powered Financial Crime Investigation & Intelligence Platform** that creates a dynamic view of the entire transaction ecosystem. Instead of evaluating individual transactions in isolation, the platform analyzes relationships between accounts, customers, devices, IP addresses, and transaction histories to identify hidden financial crime networks.
 
-• Normal spending pattern
+The platform assists investigators by automatically prioritizing suspicious accounts, explaining the reasons behind risk scores, reconstructing the flow of money, predicting potential downstream suspicious accounts, and generating investigation-ready reports. The goal is not to replace investigators but to augment their decision-making with explainable AI and intelligent graph-based analytics.
 
-• Verified customer
+---
 
-• No suspicious links
+# III. Objective
 
-• Normal transaction frequency
+The objective of this solution is to develop an intelligent investigation platform capable of identifying suspicious financial activities by combining Artificial Intelligence, graph-based relationship analysis, and behavioral analytics.
 
-Structuring
-Transaction ID
+The solution should automatically ingest transaction datasets, construct an interconnected financial network, analyze customer and account behavior, identify hidden money laundering patterns, assign dynamic risk scores, explain why specific accounts are considered suspicious, and provide investigators with interactive visualizations and automated investigation reports.
 
-TXN099520
+The platform should significantly reduce manual investigation time while improving detection accuracy, reducing false positives, and supporting regulatory compliance.
 
-Risk Score
+---
 
-92
+# IV. Definition of Done
 
-Category
+The solution shall be considered complete when it successfully demonstrates the following capabilities:
 
-CRITICAL
+* Upload and process transaction datasets.
+* Construct an interconnected transaction relationship graph.
+* Identify suspicious customers, accounts, and transaction networks.
+* Detect common AML scenarios including structuring, layering, mule accounts, circular money flow, and shell company transactions.
+* Generate dynamic AI-based risk scores.
+* Provide explainable AI recommendations describing why an account has been flagged.
+* Display interactive transaction relationship visualization.
+* Allow investigators to search and explore suspicious accounts.
+* Generate investigation summaries and downloadable reports.
+* Display dashboards containing investigation metrics and risk analytics.
 
-Reason
+---
 
-• 20 transactions of ₹49,000
+# V. Expected Outcomes
 
-• Below reporting threshold
+The proposed solution is expected to significantly improve the efficiency of financial crime investigations by automatically identifying suspicious transaction networks that are difficult to detect using conventional rule-based systems.
 
-• Same beneficiary
+Instead of manually reviewing thousands of transactions, investigators receive prioritized cases supported by AI-generated explanations, transaction relationship graphs, behavioral insights, and automated reports.
 
-• High transaction frequency
+The solution should reduce investigation time, improve detection accuracy, lower false positives, enhance regulatory compliance, increase operational efficiency, and enable financial institutions to proactively identify emerging financial crime patterns before they become large-scale threats.
 
-Pattern
+---
 
-Structuring
+# VI. Solution Requirements (Good to Have)
 
-Layering
-Transaction ID
+The proposed solution may include the following capabilities:
 
-TXN099680
+* Intelligent transaction ingestion from structured datasets.
+* Automated customer and account relationship mapping.
+* Dynamic risk scoring based on behavioral analytics.
+* Explainable AI providing investigation reasoning.
+* Interactive graph visualization of money flow.
+* Investigation timeline reconstruction.
+* AI-generated investigation summaries.
+* Search and filtering of suspicious accounts.
+* Dashboard displaying AML metrics and investigation statistics.
+* PDF investigation report generation.
+* Predictive analysis highlighting potentially suspicious downstream accounts.
+* Configurable investigation thresholds.
+* Role-based access for investigators and compliance officers.
 
-Risk Score
+---
 
-95
+# VII. Detailed Breakdown of Tasks
 
-Category
+## Basic Tasks (Must Have)
 
-CRITICAL
+* Import transaction dataset.
+* Build customer-account relationship network.
+* Display dashboard.
+* Identify suspicious transactions.
+* Assign AI-generated risk score.
+* Generate investigation report.
 
-Reason
+## Intermediate Tasks (Must Have)
 
-• Money routed through multiple accounts
+* Detect structuring patterns.
+* Detect layering patterns.
+* Detect circular money flow.
+* Detect mule account behavior.
+* Display interactive relationship graph.
+* Explain AI decisions.
+* Investigation timeline visualization.
 
-• Funds consolidated
+## Advanced Tasks (Good to Have)
 
-• Same device
+* Predict future suspicious fund movement.
+* AI Investigation Copilot.
+* Relationship confidence scoring.
+* What-if investigation simulation.
+* Dynamic network evolution visualization.
+* Risk heatmap.
+* Automated investigation workflow recommendations.
 
-• Same IP
+---
 
-Pattern
+# VIII. Input
 
-Layering
+The solution may receive the following anonymized input datasets:
 
-Circular Flow
-Transaction ID
+* Customer Information
+* Account Information
+* Transaction History
+* KYC Details
+* Device Information
+* IP Address Information
+* Branch Information
+* Beneficiary Details
+* Blacklisted Account List
+* High-Risk Country Information (Optional)
+* Historical Investigation Cases (Optional)
 
-TXN099950
+---
 
-Risk Score
+# IX. Guardrails
 
-98
+* Only anonymized or synthetic datasets should be used.
+* Personally identifiable information must not be exposed.
+* AI recommendations should support investigators rather than replace human decision-making.
+* Investigation results must remain explainable and auditable.
+* The platform should avoid bias by evaluating behavioral patterns rather than demographic characteristics.
+* All generated reports should clearly indicate that final compliance decisions remain with authorized investigators.
 
-Category
+---
 
-CRITICAL
+# X. Dataset
 
-Reason
+The solution should support structured datasets containing:
 
-• Circular money flow
+* Customer Dataset
+* Account Dataset
+* Transaction Dataset
+* Blacklisted Accounts
+* Device/IP Mapping
+* KYC Information
+* Synthetic AML scenarios covering:
 
-• Same accounts repeated
+  * Structuring
+  * Layering
+  * Circular Money Flow
+  * Mule Accounts
+  * Shell Companies
+  * High-Risk Transactions
+  * Shared Device/IP
+  * Suspicious Relationship Networks
 
-• High transaction velocity
+---
 
-• Hidden transaction chain
+# XI. Reference
 
-Pattern
+* Financial Action Task Force (FATF) Recommendations
+* Reserve Bank of India (RBI) KYC & AML Guidelines
+* Financial Intelligence Unit (FIU-IND) Guidelines
+* Wolfsberg Anti-Money Laundering Principles
+* Basel Committee Risk Management Guidelines
 
-Circular Money Flow
+---
 
-Dashboard Output
-Once the file is uploaded, your dashboard could display something like:
-Total Transactions
+# Technology Stack (Preferred)
 
-100,000
+*A brief overview of the technologies and frameworks that could be used.*
 
------------------------
+### Frontend
 
-Normal
+* **Any UI framework** *(React, Angular, Vue.js)*
 
-99,500
+### Backend
 
------------------------
+* **Any standard backend technology stack** *(Java – Spring Boot, Python – Django/FastAPI, JavaScript – Node.js/Express, .NET, etc.)*
 
-AML Alerts
+### Database
 
-500
+* **Any suitable in-memory or graph database** *(H2 In-Memory Database, Neo4j, SQLite, PostgreSQL, etc.)* to store and retrieve data through APIs.
 
------------------------
+### Artificial Intelligence & Machine Learning
 
-Critical Alerts
+* **Any suitable AI/ML framework** *(Python, Scikit-learn, TensorFlow, PyTorch, NetworkX, XGBoost, Isolation Forest, etc.)* for anomaly detection, risk scoring, and relationship analysis.
 
-320
+### Data Processing
 
------------------------
+* **Any suitable data processing framework** *(OpenCSV, Apache Commons CSV, Pandas, Polars, CSV Parser Libraries, etc.)* for importing, validating, cleaning, and transforming transaction datasets before analysis.
 
-High Risk Accounts
+---
 
-74
-
------------------------
-
-Blacklisted Connections
-
-18
-
------------------------
-
-Structuring Cases
-
-100
-
------------------------
-
-Layering Cases
-
-100
-
------------------------
-
-Circular Flow Cases
-
-300
-
-Pie Chart
-Normal
-
-99.5%
-
-High Risk
-
-0.3%
-
-Medium
-
-0.1%
-
-Critical
-
-0.1%
-
-Graph View
-Clicking a suspicious account might show:
-ACC900001
-
-↓
-
-20 Mule Accounts
-
-↓
-
-ACC999900
-
-↓
-
-Crypto Wallet
-
-↓
-
-Blacklisted Entity
-
-AI Explanation
-Instead of simply saying Fraud Detected, the application should generate a narrative such as:
-Risk Score: 97 (Critical)
-This account initiated 20 consecutive transactions of ₹49,000 within a short time period to multiple beneficiary accounts. The funds were subsequently consolidated into a single account and later transferred through additional intermediary accounts. The same device ID and IP address were observed across several linked accounts, indicating coordinated activity. The overall transaction pattern strongly resembles Structuring followed by Layering, which are common money laundering techniques. Immediate investigation is recommended.
-
-For an enterprise-grade hackathon demo
-I would actually recommend enhancing this dataset to include around 10–12 different AML scenarios instead of just three. For example:
-
-Structuring (Smurfing)
-
-
-Layering
-
-
-Circular Money Flow
-
-
-Mule Accounts
-
-
-Dormant Account Activation
-
-
-Shared Device/IP Fraud
-
-
-Blacklisted Account Transfers
-
-
-High-Risk Country Transfers
-
-
-Shell Company Networks
-
-
-Cryptocurrency Off-Ramping
-
-
-Rapid Cash Withdrawals
-
-
-Synthetic Identity Fraud
-
-This richer dataset would make your dashboard, graph visualization, AI risk scoring, and investigation reports much more impressive during the presentation.
-
-
-Significance of the Problem
-
-Money laundering is a major global financial crime that enables illegal activities such as fraud, terrorism financing, tax evasion, and corruption. As digital payments and online banking continue to grow, financial institutions process millions of transactions every day, making it increasingly difficult to identify suspicious activities using traditional rule-based AML systems. Manual investigations are time-consuming, generate a high number of false positives, and often fail to detect complex laundering networks. Developing an AI-powered, graph-based AML platform enables financial institutions to proactively identify hidden transaction patterns, reduce investigation time, improve compliance with regulatory standards, and strengthen the overall security of the financial ecosystem.
-
-Potential Impact
-
-The proposed solution can significantly improve the efficiency and accuracy of Anti-Money Laundering investigations by combining Artificial Intelligence with Graph Database technology. It enables banks and financial institutions to detect sophisticated money laundering networks in real time, reduce false positives, and prioritize high-risk cases using intelligent risk scoring. The platform helps compliance teams make faster and more informed decisions while generating investigation-ready reports for regulatory authorities. In the long term, the solution can contribute to reducing financial crime, improving regulatory compliance, minimizing operational costs, protecting customer trust, and creating a safer and more transparent digital financial ecosystem.
-
-Why Solving This Problem is Important
-
-Financial crime is becoming increasingly sophisticated, and existing rule-based systems are no longer sufficient to detect complex laundering techniques. Delayed detection not only results in financial losses but also exposes institutions to regulatory penalties and reputational damage. By leveraging AI, machine learning, and graph analytics, this solution transforms AML investigations from a reactive, manual process into a proactive, intelligent, and scalable system. Solving this problem enables financial institutions to respond to suspicious activities faster, improve compliance, reduce operational effort, and ultimately strengthen the integrity and trustworthiness of the global financial system.
-
-These sections fit naturally after your Problem Statement and before Input, making your hackathon document look like a professional product proposal.
+This version is written in a style similar to enterprise hackathons hosted by banks such as **JPMorgan Chase, Wells Fargo, Goldman Sachs, or Mastercard**. It focuses on the business problem, expected outcomes, and solution capabilities while remaining technology-agnostic, which is what hackathon organizers and judges typically look for.
