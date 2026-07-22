@@ -1,6 +1,4 @@
-Yes. I would actually make it read like an **enterprise banking use case** rather than a college project. One suggestion: instead of only focusing on *money laundering detection*, position it as an **AI-Powered Financial Crime Investigation & Intelligence Platform**. That gives you room to include AML, fraud, mule accounts, shell companies, and explainable AI.
 
----
 
 # I. Use Case Short Title
 
@@ -198,6 +196,3 @@ The solution should support structured datasets containing:
 
 * **Any suitable data processing framework** *(OpenCSV, Apache Commons CSV, Pandas, Polars, CSV Parser Libraries, etc.)* for importing, validating, cleaning, and transforming transaction datasets before analysis.
 
----
-
-This version is written in a style similar to enterprise hackathons hosted by banks such as **JPMorgan Chase, Wells Fargo, Goldman Sachs, or Mastercard**. It focuses on the business problem, expected outcomes, and solution capabilities while remaining technology-agnostic, which is what hackathon organizers and judges typically look for.
