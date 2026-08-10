@@ -1,0 +1,192 @@
+<app-page-title [titleText]="'page-title.flows.rejects' | translate"></app-page-title>
+<app-timeline></app-timeline>
+<!-- above two line is constant no need to change -->
+<div class="table-container">
+  <form [formGroup]="rejectsForm">
+    
+    <!-- Top Underline Navigation Tabs -->
+    <div class="tab-navigation">
+      <button 
+        type="button" 
+        class="tab-link" 
+        [class.active]="selectedViewMode?.value === specificTags[0]"
+        (click)="selectTab(viewModes[0])">
+        <i class="pi pi-angle-left"></i> REJETS COMPTABLES
+      </button>
+      <button 
+        type="button" 
+        class="tab-link" 
+        [class.active]="selectedViewMode?.value === specificTags[1]"
+        (click)="selectTab(viewModes[1])">
+        REJETS SGI SMM
+      </button>
+    </div>
+
+    <!-- Action Toolbar (Filters, Global Search, Import, Date Paginator) -->
+    <div class="action-toolbar">
+      <div class="toolbar-left">
+        <button type="button" class="btn-filter-pill" (click)="toggleFilterDrawer()">
+          FILTRES ({{ instanceFilter.length || 8 }})
+        </button>
+        <button type="button" class="btn-reset-link" (click)="resetFilters()">
+          Réinitialiser
+        </button>
+      </div>
+
+      <div class="toolbar-center">
+        <div class="global-search-container">
+          <i class="pi pi-search search-icon"></i>
+          <input 
+            type="text" 
+            class="global-search-input"
+            [(ngModel)]="globalSearchText" 
+            [ngModelOptions]="{standalone: true}" 
+            (input)="dt.filterGlobal(globalSearchText, 'contains')" 
+            placeholder="Recherche globale" />
+        </div>
+      </div>
+
+      <div class="toolbar-right">
+        <div class="upload-block" *ngIf="isAllowed">
+          <p-fileupload 
+            #fileUpload 
+            (uploadHandler)="uploadFile($event)" 
+            accept=".csv" 
+            chooseLabel="Import"
+            class="import-btn" 
+            customUpload="true" 
+            label="Import" 
+            mode="basic">
+          </p-fileupload>
+          <button 
+            *ngIf="fileupload?._files?.length" 
+            pButton 
+            type="button" 
+            class="clear-btn"
+            [icon]="'pi pi-times'" 
+            (click)="clearUploadInput()">
+          </button>
+        </div>
+
+        <app-date-paginator 
+          class="date-paginator-box" 
+          [dateForm]="rejectsForm.get('accountingDay')" 
+          [defaultValue]="today"
+          [placeholder]="'datal.oadingForm.accountingDayComputationInProgress'">
+        </app-date-paginator>
+      </div>
+    </div>
+
+    <p-messages [(value)]="message"></p-messages>
+
+    <!-- Data Table -->
+    <div class="table-wrapper">
+      <p-table 
+        #dt 
+        [scrollable]="false" 
+        scrollHeight="1000vh" 
+        [value]="eIRRejects[selectedViewMode?.value || selectedViewMode]"
+        [globalFilterFields]="['business','so','lot','label','entity','rejectsNumber','rejectsCause','recurrence','communicationDate']">
+        
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="business">
+              Instance
+              <p-sortIcon field="business"></p-sortIcon>
+            </th>
+            <th pSortableColumn="so">
+              So
+              <p-sortIcon field="so"></p-sortIcon>
+            </th>
+            <th pSortableColumn="lot">
+              Lot
+              <p-sortIcon field="lot"></p-sortIcon>
+            </th>
+            <th pSortableColumn="label">
+              Libellé
+              <p-sortIcon field="label"></p-sortIcon>
+            </th>
+            <th pSortableColumn="entity">
+              Entité(s)
+              <p-sortIcon field="entity"></p-sortIcon>
+            </th>
+            <th pSortableColumn="rejectsNumber">
+              Nbre de rejets
+              <p-sortIcon field="rejectsNumber"></p-sortIcon>
+            </th>
+            <th pSortableColumn="rejectsCause">
+              Cause des rejets
+              <p-sortIcon field="rejectsCause"></p-sortIcon>
+            </th>
+            <th pSortableColumn="recurrence">
+              Récurrence
+              <p-sortIcon field="recurrence"></p-sortIcon>
+            </th>
+            <th pSortableColumn="communicationDate">
+              Date/heure de communication
+              <p-sortIcon field="communicationDate"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-EIRRejectsComptable>
+          <tr>
+            <td>{{ EIRRejectsComptable.business }}</td>
+            <td>{{ EIRRejectsComptable.so }}</td>
+            <td class="cell-lot">{{ EIRRejectsComptable.lot }}</td>
+            <td>{{ EIRRejectsComptable.label }}</td>
+            <td>{{ EIRRejectsComptable.entity }}</td>
+            <td class="cell-reject-count">{{ EIRRejectsComptable.rejectsNumber | number: '1.0-0': currentLang }}</td>
+            <td>{{ EIRRejectsComptable.rejectsCause }}</td>
+            <td>{{ EIRRejectsComptable.recurrence }}</td>
+            <td>
+              {{ (EIRRejectsComptable.communicationDate | localizedDate: 'longDate') }}
+              {{ EIRRejectsComptable.communicationDate | localizedDate: 'shortTime' }}
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9" class="empty-table-msg">Aucun résultat trouvé</td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </div>
+
+    <!-- Filter Drawer / Overlay Sidebar -->
+    <div class="filter-drawer-backdrop" *ngIf="showFilterDrawer" (click)="toggleFilterDrawer()"></div>
+    <div class="filter-drawer" [class.open]="showFilterDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          FILTRES ({{ instanceFilter.length || 8 }})
+        </div>
+        <button type="button" class="btn-close-drawer" (click)="toggleFilterDrawer()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <div class="drawer-content">
+        <div class="filter-section-title">
+          <i class="pi pi-briefcase"></i>
+          <span>FILTRE PAR MÉTIER(S) ({{ specificTags.length || 8 }})</span>
+        </div>
+
+        <div class="filter-component-container">
+          <app-checkbox-instances-filter 
+            (instancesEvent)="instanceToParent($event)" 
+            [application]="'EIR'">
+          </app-checkbox-instances-filter>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <button type="button" class="btn-valider-full" (click)="toggleFilterDrawer()">
+          Valider
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
