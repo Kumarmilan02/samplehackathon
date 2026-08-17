@@ -40,8 +40,8 @@
       }
 
       &.active {
-        color: #00915a;
-        border-bottom-color: #00915a;
+        color: #137e54;
+        border-bottom-color: #137e54;
       }
     }
   }
@@ -49,7 +49,7 @@
   /* Action Toolbar (Filter Pill, Reset, Global Search, Import, Date Paginator) */
   .action-toolbar {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 20px;
@@ -59,6 +59,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      padding-bottom: 2px;
 
       .btn-filter-pill {
         background-color: #f3f4f6;
@@ -119,23 +120,76 @@
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
           &:focus {
-            border-color: #00915a;
-            box-shadow: 0 0 0 2px rgba(0, 145, 90, 0.15);
+            border-color: #137e54;
+            box-shadow: 0 0 0 2px rgba(19, 126, 84, 0.15);
             background-color: #ffffff;
           }
         }
       }
     }
 
+    /* Right Toolbar Section containing Import button and Date Paginator */
     .toolbar-right {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       gap: 16px;
 
       .upload-block {
         display: flex;
         align-items: center;
         gap: 6px;
+
+        /* Styled PrimeNG Import Button matching screenshot */
+        ::ng-deep .import-btn {
+
+          .p-button,
+          .p-fileupload-choose {
+            background-color: #ffffff !important;
+            border: 1px solid #d1d5db !important;
+            color: #374151 !important;
+            border-radius: 4px !important;
+            padding: 6px 14px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            box-shadow: none !important;
+            transition: all 0.15s ease !important;
+
+            &:hover {
+              background-color: #f9fafb !important;
+              border-color: #9ca3af !important;
+              color: #111827 !important;
+            }
+
+            .p-button-icon,
+            .pi {
+              order: 2;
+              /* Icon after label: "Import ⤓" */
+              font-size: 13px !important;
+              color: #6b7280 !important;
+            }
+
+            .p-button-label {
+              order: 1;
+            }
+          }
+        }
+      }
+
+      .date-paginator-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+
+        .date-label {
+          font-size: 11px;
+          color: #6b7280;
+          font-weight: 500;
+          margin-bottom: 2px;
+        }
       }
     }
   }
@@ -145,7 +199,7 @@
     margin-top: 10px;
 
     ::ng-deep .p-datatable {
-      .p-datatable-thead > tr > th {
+      .p-datatable-thead>tr>th {
         background-color: #ffffff;
         color: #6b7280;
         font-weight: 600;
@@ -157,7 +211,7 @@
         border-right: none;
       }
 
-      .p-datatable-tbody > tr {
+      .p-datatable-tbody>tr {
         background-color: #ffffff;
         transition: background-color 0.15s ease;
 
@@ -165,7 +219,7 @@
           background-color: #f9fafb;
         }
 
-        > td {
+        >td {
           padding: 12px 14px;
           border-bottom: 1px solid #f3f4f6;
           border-top: none;
@@ -175,7 +229,7 @@
           color: #374151;
 
           &.cell-lot {
-            color: #00915a;
+            color: #137e54;
             font-weight: 600;
           }
 
@@ -196,107 +250,225 @@
   }
 }
 
-/* Slide-out Filter Drawer (Overlay Sidebar) */
+/* Slide-out Filter Drawer Overlay (Exact BNP Paribas MIND Design) */
 .filter-drawer-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 999;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .filter-drawer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 320px;
+  width: 350px;
+  max-width: 90vw;
   height: 100vh;
   background-color: #ffffff;
   z-index: 1000;
-  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   transform: translateX(-100%);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.open {
     transform: translateX(0);
   }
 
+  /* Drawer Header */
   .drawer-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 20px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
 
     .drawer-title {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
-      color: #111827;
-      letter-spacing: 0.5px;
+      color: #1f2937;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
     }
 
     .btn-close-drawer {
       background: transparent;
       border: none;
-      font-size: 16px;
-      color: #6b7280;
+      font-size: 18px;
+      color: #9ca3af;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.15s ease, background-color 0.15s ease;
 
       &:hover {
         color: #111827;
+        background-color: #f3f4f6;
       }
     }
   }
 
+  /* Drawer Content Container */
   .drawer-content {
     flex: 1;
-    padding: 20px;
+    padding: 16px 20px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    .filter-section-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #6b7280;
-      letter-spacing: 0.5px;
-      margin-bottom: 16px;
+    /* Green Collapsible Filter Card Block */
+    .filter-card-green {
+      background-color: #d8ebd9;
+      /* Mint light green background matching screenshot */
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 24px;
 
-      i {
-        font-size: 14px;
+      .filter-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        cursor: pointer;
+        user-select: none;
+
+        .header-title-group {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .icon-briefcase {
+            font-size: 16px;
+            color: #2d4532;
+          }
+
+          .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2d4532;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+          }
+        }
+
+        .btn-toggle-accordion {
+          background: transparent;
+          border: none;
+          color: #2d4532;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2px;
+        }
+      }
+
+      .filter-section-body {
+        padding: 4px 16px 20px 16px;
+
+        .pills-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px 8px;
+
+          .filter-pill-tag {
+            background-color: #ffffff;
+            border: 1.5px solid #137e54;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #137e54;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: all 0.15s ease-in-out;
+            outline: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+            &:hover {
+              background-color: #eaf5ed;
+              border-color: #0e7044;
+              color: #0e7044;
+              transform: translateY(-1px);
+            }
+
+            &.selected {
+              background-color: #ffffff;
+              border-color: #137e54;
+              color: #137e54;
+              box-shadow: inset 0 0 0 0.5px #137e54;
+            }
+
+            &:not(.selected) {
+              background-color: #ffffff;
+              border-color: #9ca3af;
+              color: #6b7280;
+
+              &:hover {
+                border-color: #137e54;
+                color: #137e54;
+              }
+            }
+          }
+        }
+
+        .filter-component-container {
+          margin-top: 12px;
+        }
       }
     }
 
-    .filter-component-container {
-      margin-top: 10px;
+    /* Valider Button at bottom of content area */
+    .valider-button-container {
+      margin-top: auto;
+      padding-top: 16px;
+
+      .btn-valider-full {
+        width: 100%;
+        background-color: #137e54;
+        /* Forest green matching image */
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        box-shadow: 0 2px 6px rgba(19, 126, 84, 0.25);
+
+        &:hover {
+          background-color: #0e7044;
+        }
+
+        &:active {
+          transform: scale(0.99);
+        }
+      }
     }
   }
+}
 
-  .drawer-footer {
-    padding: 16px 20px;
-    border-top: 1px solid #e5e7eb;
-    background-color: #ffffff;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
 
-    .btn-valider-full {
-      width: 100%;
-      background-color: #00915a;
-      color: #ffffff;
-      border: none;
-      border-radius: 6px;
-      padding: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: #007749;
-      }
-    }
+  to {
+    opacity: 1;
   }
 }

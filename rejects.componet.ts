@@ -32,10 +32,34 @@ export class FlowsRejectComponent implements OnInit {
   selectedViewMode: any;
   uploadedFile: any[] = [];
   message: Message[] = [];
-  isAllowed: boolean;
+  isAllowed: boolean = true;
 
   showFilterDrawer = false;
   globalSearchText = '';
+
+  // Filter Drawer State & Metier Tags (exact match to BNP Paribas MIND design)
+  readonly metiersList: string[] = [
+    'CIB METRO',
+    'BCEF',
+    'BNL',
+    'PF',
+    'FORTIS',
+    'CIBE EMEA',
+    'APAC',
+    'AMER'
+  ];
+  selectedMetiers: string[] = [
+    'CIB METRO',
+    'BCEF',
+    'BNL',
+    'PF',
+    'FORTIS',
+    'CIBE EMEA',
+    'APAC',
+    'AMER'
+  ];
+  isMetierExpanded = true;
+  useCustomFilterComponent = false;
 
   constructor(
     private eirRejectService: EirRejectService,
@@ -51,6 +75,32 @@ export class FlowsRejectComponent implements OnInit {
     this.showFilterDrawer = !this.showFilterDrawer;
   }
 
+  toggleMetierSection(): void {
+    this.isMetierExpanded = !this.isMetierExpanded;
+  }
+
+  isMetierSelected(metier: string): boolean {
+    return this.selectedMetiers.includes(metier);
+  }
+
+  toggleMetier(metier: string): void {
+    const index = this.selectedMetiers.indexOf(metier);
+    if (index > -1) {
+      this.selectedMetiers.splice(index, 1);
+    } else {
+      this.selectedMetiers.push(metier);
+    }
+    this.instanceFilter = [...this.selectedMetiers];
+  }
+
+  applyFilters(): void {
+    this.instanceFilter = [...this.selectedMetiers];
+    if (!this.isInit) {
+      this.getEirRejects();
+    }
+    this.showFilterDrawer = false;
+  }
+
   selectTab(mode: any): void {
     if (mode) {
       this.selectedViewMode = mode;
@@ -64,7 +114,8 @@ export class FlowsRejectComponent implements OnInit {
   }
 
   resetFilters(): void {
-    this.instanceFilter = [];
+    this.selectedMetiers = [...this.metiersList];
+    this.instanceFilter = [...this.selectedMetiers];
     this.globalSearchText = '';
     if (!this.isInit) {
       this.getEirRejects();
@@ -72,16 +123,21 @@ export class FlowsRejectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.instanceFilter = [...this.selectedMetiers];
     this.specificTags.forEach(tag => {
       this.eIRRejects[tag] = [];
     });
     this.getCurrentLanguage();
     this.initializeViewModes();
-    this.jurisdiction.getUserId().subscribe(userId => {
-      this.alertGuardService.resolveWithUser(userId).then(isAllowed => {
-        this.isAllowed = isAllowed;
+    if (this.jurisdiction && this.jurisdiction.getUserId) {
+      this.jurisdiction.getUserId().subscribe(userId => {
+        if (this.alertGuardService && this.alertGuardService.resolveWithUser) {
+          this.alertGuardService.resolveWithUser(userId).then(isAllowed => {
+            this.isAllowed = isAllowed;
+          });
+        }
       });
-    });
+    }
   }
 
   private initializeViewModes(): void {
@@ -215,4 +271,4 @@ export class FlowsRejectComponent implements OnInit {
       this.fileupload.clear();
     }
   }
-}
+}

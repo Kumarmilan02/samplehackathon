@@ -3,20 +3,14 @@
 <!-- above two line is constant no need to change -->
 <div class="table-container">
   <form [formGroup]="rejectsForm">
-    
+
     <!-- Top Underline Navigation Tabs -->
     <div class="tab-navigation">
-      <button 
-        type="button" 
-        class="tab-link" 
-        [class.active]="selectedViewMode?.value === specificTags[0]"
+      <button type="button" class="tab-link" [class.active]="selectedViewMode?.value === specificTags[0]"
         (click)="selectTab(viewModes[0])">
         <i class="pi pi-angle-left"></i> REJETS COMPTABLES
       </button>
-      <button 
-        type="button" 
-        class="tab-link" 
-        [class.active]="selectedViewMode?.value === specificTags[1]"
+      <button type="button" class="tab-link" [class.active]="selectedViewMode?.value === specificTags[1]"
         (click)="selectTab(viewModes[1])">
         REJETS SGI SMM
       </button>
@@ -26,7 +20,7 @@
     <div class="action-toolbar">
       <div class="toolbar-left">
         <button type="button" class="btn-filter-pill" (click)="toggleFilterDrawer()">
-          FILTRES ({{ instanceFilter.length || 8 }})
+          FILTRES ({{ selectedMetiers?.length || instanceFilter?.length || 8 }})
         </button>
         <button type="button" class="btn-reset-link" (click)="resetFilters()">
           Réinitialiser
@@ -36,44 +30,30 @@
       <div class="toolbar-center">
         <div class="global-search-container">
           <i class="pi pi-search search-icon"></i>
-          <input 
-            type="text" 
-            class="global-search-input"
-            [(ngModel)]="globalSearchText" 
-            [ngModelOptions]="{standalone: true}" 
-            (input)="dt.filterGlobal(globalSearchText, 'contains')" 
+          <input type="text" class="global-search-input" [(ngModel)]="globalSearchText"
+            [ngModelOptions]="{standalone: true}" (input)="dt.filterGlobal(globalSearchText, 'contains')"
             placeholder="Recherche globale" />
         </div>
       </div>
 
       <div class="toolbar-right">
-        <div class="upload-block" *ngIf="isAllowed">
-          <p-fileupload 
-            #fileUpload 
-            (uploadHandler)="uploadFile($event)" 
-            accept=".csv" 
-            chooseLabel="Import"
-            class="import-btn" 
-            customUpload="true" 
-            label="Import" 
-            mode="basic">
+        <!-- Import Button (Upload Block) -->
+        <div class="upload-block" *ngIf="isAllowed !== false">
+          <p-fileupload #fileUpload (uploadHandler)="uploadFile($event)" accept=".csv" chooseLabel="Import"
+            class="import-btn" customUpload="true" label="Import" icon="pi pi-download" mode="basic">
           </p-fileupload>
-          <button 
-            *ngIf="fileupload?._files?.length" 
-            pButton 
-            type="button" 
-            class="clear-btn"
-            [icon]="'pi pi-times'" 
+          <button *ngIf="fileupload?._files?.length" pButton type="button" class="clear-btn" [icon]="'pi pi-times'"
             (click)="clearUploadInput()">
           </button>
         </div>
 
-        <app-date-paginator 
-          class="date-paginator-box" 
-          [dateForm]="rejectsForm.get('accountingDay')" 
-          [defaultValue]="today"
-          [placeholder]="'datal.oadingForm.accountingDayComputationInProgress'">
-        </app-date-paginator>
+        <!-- Date Paginator with "Date de traitement" Label -->
+        <div class="date-paginator-container">
+          <span class="date-label">Date de traitement</span>
+          <app-date-paginator class="date-paginator-box" [dateForm]="rejectsForm.get('accountingDay')"
+            [defaultValue]="today" [placeholder]="'datal.oadingForm.accountingDayComputationInProgress'">
+          </app-date-paginator>
+        </div>
       </div>
     </div>
 
@@ -81,13 +61,10 @@
 
     <!-- Data Table -->
     <div class="table-wrapper">
-      <p-table 
-        #dt 
-        [scrollable]="false" 
-        scrollHeight="1000vh" 
+      <p-table #dt [scrollable]="false" scrollHeight="1000vh"
         [value]="eIRRejects[selectedViewMode?.value || selectedViewMode]"
         [globalFilterFields]="['business','so','lot','label','entity','rejectsNumber','rejectsCause','recurrence','communicationDate']">
-        
+
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="business">
@@ -155,36 +132,52 @@
       </p-table>
     </div>
 
-    <!-- Filter Drawer / Overlay Sidebar -->
+    <!-- Filter Drawer / Overlay Sidebar (BNP Paribas MIND Style) -->
     <div class="filter-drawer-backdrop" *ngIf="showFilterDrawer" (click)="toggleFilterDrawer()"></div>
     <div class="filter-drawer" [class.open]="showFilterDrawer">
       <div class="drawer-header">
         <div class="drawer-title">
-          FILTRES ({{ instanceFilter.length || 8 }})
+          FILTRES ({{ selectedMetiers?.length || instanceFilter?.length || 8 }})
         </div>
-        <button type="button" class="btn-close-drawer" (click)="toggleFilterDrawer()">
+        <button type="button" class="btn-close-drawer" (click)="toggleFilterDrawer()" aria-label="Fermer">
           <i class="pi pi-times"></i>
         </button>
       </div>
 
       <div class="drawer-content">
-        <div class="filter-section-title">
-          <i class="pi pi-briefcase"></i>
-          <span>FILTRE PAR MÉTIER(S) ({{ specificTags.length || 8 }})</span>
+        <!-- Collapsible Green Filter Card -->
+        <div class="filter-card-green">
+          <div class="filter-section-header" (click)="toggleMetierSection()">
+            <div class="header-title-group">
+              <i class="pi pi-briefcase icon-briefcase"></i>
+              <span class="section-title">FILTRE PAR MÉTIER(S) ({{ metiersList.length || 8 }})</span>
+            </div>
+            <button type="button" class="btn-toggle-accordion">
+              <i class="pi" [ngClass]="isMetierExpanded ? 'pi-minus' : 'pi-plus'"></i>
+            </button>
+          </div>
+
+          <div class="filter-section-body" *ngIf="isMetierExpanded">
+            <div class="pills-grid">
+              <button type="button" *ngFor="let metier of metiersList" class="filter-pill-tag"
+                [class.selected]="isMetierSelected(metier)" (click)="toggleMetier(metier)">
+                {{ metier }}
+              </button>
+            </div>
+            <!-- Custom component fallback support -->
+            <div class="filter-component-container" *ngIf="useCustomFilterComponent">
+              <app-checkbox-instances-filter (instancesEvent)="instanceToParent($event)" [application]="'EIR'">
+              </app-checkbox-instances-filter>
+            </div>
+          </div>
         </div>
 
-        <div class="filter-component-container">
-          <app-checkbox-instances-filter 
-            (instancesEvent)="instanceToParent($event)" 
-            [application]="'EIR'">
-          </app-checkbox-instances-filter>
+        <!-- Valider Action Button -->
+        <div class="valider-button-container">
+          <button type="button" class="btn-valider-full" (click)="applyFilters()">
+            Valider
+          </button>
         </div>
-      </div>
-
-      <div class="drawer-footer">
-        <button type="button" class="btn-valider-full" (click)="toggleFilterDrawer()">
-          Valider
-        </button>
       </div>
     </div>
 
